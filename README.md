@@ -1,33 +1,42 @@
 # Zomato-Advanced-SQL-Project
-  ```sql
--- 1. Create Database and Use It
--- Create the "zomato" database and switch to it.
 
-
+### 1. Create Database and Use It
+ ```sql
+-- Create the "zomato" database and switch to it. 
 CREATE DATABASE zomato;
 USE zomato;
+```
 
--- 2. View All Data from Tables
+### 2. View All Data from Tables
+```sql
 -- Retrieve all records from the primary tables in the database.
 SELECT * FROM customers;
 SELECT * FROM deliveries;
 SELECT * FROM orders;
 SELECT * FROM restaurants;
 SELECT * FROM riders;
+```
 
--- 3. Count Null Values in Customers Table
+### 3. Count Null Values in Customers Table
+```sql
 -- Find the number of customers with missing Customer IDs or Registration Dates.
 SELECT COUNT(*) FROM customers WHERE Customer_id IS NULL OR Registration_Date IS NULL;
+```
 
--- 4. Count Null Values in Deliveries Table
+### 4. Count Null Values in Deliveries Table
+```sql
 -- Find the number of deliveries with missing critical information like Order ID or Rider ID.
 SELECT COUNT(*) FROM deliveries WHERE Order_ID IS NULL OR delivery_status IS NULL OR delivery_time IS NULL OR rider_id IS NULL;
+```
 
--- 5. Count Null Values in Orders Table
+### 5. Count Null Values in Orders Table
+```sql
 -- Identify orders with missing details such as Customer ID, Restaurant ID, or Amount.
 SELECT COUNT(*) FROM orders WHERE Order_ID IS NULL OR Customer_ID IS NULL OR Restaurant_ID IS NULL OR Order_Items IS NULL OR Order_Date IS NULL OR Order_Time IS NULL OR `Status` IS NULL OR amount IS NULL;
+```
 
--- 6. Frequent Customer Orders
+### 6. Frequent Customer Orders
+```sql
 -- Fetch customers and their order details for orders placed in the last year, sorted by total orders.
 SELECT c.customer_id, c.customer_name, o.order_items AS dishes, COUNT(*) AS total_orders 
 FROM orders AS o 
@@ -35,8 +44,10 @@ JOIN customers AS c ON c.customer_id = o.customer_id
 WHERE o.order_date >= CURDATE() - INTERVAL 1 YEAR 
 GROUP BY c.customer_id, c.customer_name, o.order_items 
 ORDER BY c.customer_id, total_orders DESC;
+```
 
--- 7. Time Slot Analysis for Orders
+### 7. Time Slot Analysis for Orders
+```sql
 -- Group orders by hourly time slots to identify the busiest periods.
 SELECT 
     CASE
@@ -57,28 +68,36 @@ SELECT
 FROM orders 
 GROUP BY TIME_SLOT 
 ORDER BY ORDER_COUNT DESC;
+```
 
--- 8. Customer Average Order Value (AOV)
+### 8. Customer Average Order Value (AOV)
+```sql
 -- Calculate the average order value for customers who placed more than three orders.
 SELECT C.CUSTOMER_NAME, AVG(O.AMOUNT) AS AOV 
 FROM ORDERS AS O 
 JOIN CUSTOMERS AS C ON C.CUSTOMER_ID = O.CUSTOMER_ID 
 GROUP BY C.CUSTOMER_NAME 
 HAVING COUNT(O.ORDER_ID) > 3;
+```
 
--- 9. High-Value Customers
+### 9. High-Value Customers
+```sql
 -- List customers who have spent more than 100K on food orders.
 SELECT C.CUSTOMER_NAME, SUM(O.AMOUNT) AS TOTAL_SPENT 
 FROM ORDERS AS O 
 JOIN CUSTOMERS AS C ON C.CUSTOMER_ID = O.CUSTOMER_ID 
 GROUP BY C.CUSTOMER_NAME 
 HAVING SUM(O.AMOUNT) > 100000;
+```
 
--- 10. Undelivered Orders
+### 10. Undelivered Orders
+```sql
 -- Identify orders that were not delivered by nullifying invalid delivery IDs.
 UPDATE DELIVERIES SET DELIVERY_ID = NULL WHERE TRIM(DELIVERY_ID) = '';
+```
 
--- 11. Restaurant Revenue Ranking
+### 11. Restaurant Revenue Ranking
+```sql
 -- Rank restaurants by their total revenue within each city for the last year.
 WITH RANKING_TABLE AS (
     SELECT 
@@ -92,8 +111,10 @@ WITH RANKING_TABLE AS (
     GROUP BY R.CITY, R.RESTAURANT_NAME
 )
 SELECT * FROM RANKING_TABLE WHERE RANK_ = 1;
+```
 
--- 12. Customer Churn
+### 12. Customer Churn
+```sql
 -- Find customers who placed orders in 2020 but not in 2024.
 SELECT DISTINCT CUSTOMER_ID 
 FROM ORDERS 
@@ -103,8 +124,10 @@ AND CUSTOMER_ID NOT IN (
     FROM ORDERS 
     WHERE EXTRACT(YEAR FROM STR_TO_DATE(ORDER_DATE, '%Y-%m-%d')) = 2024
 );
+```
 
--- 13. Rider Average Delivery Time
+### 13. Rider Average Delivery Time
+```sql
 -- Calculate the average delivery time for each rider.
 SELECT  
     D.RIDER_ID, 
@@ -113,8 +136,10 @@ FROM ORDERS AS O
 JOIN DELIVERIES AS D ON O.ORDER_ID = D.ORDER_ID 
 WHERE D.DELIVERY_STATUS = 'DELIVERED' 
 GROUP BY D.RIDER_ID;
+```
 
--- 14. Monthly Growth Ratio of Restaurants
+### 14. Monthly Growth Ratio of Restaurants
+```sql
 -- Compare the number of delivered orders each month to the previous month.
 WITH growth_ratio AS (
     SELECT
@@ -134,8 +159,10 @@ SELECT
     current_month_orders, 
     (current_month_orders / previous_month_orders) * 100 AS growth_ratio
 FROM growth_ratio;
+```
 
--- 15. Rider Monthly Earnings
+###15. Rider Monthly Earnings
+```sql
 -- Calculate each rider's total monthly earnings, assuming they earn 8% of the order amount.
 SELECT
     d.rider_id, 
@@ -144,8 +171,10 @@ SELECT
 FROM orders AS o
 JOIN deliveries AS d ON o.order_id = d.order_id
 GROUP BY d.rider_id, month;
+```
 
--- 16. Order Frequency by Day
+###16. Order Frequency by Day
+```sql
 -- Identify the peak day of orders for each restaurant.
 SELECT 
     r.restaurant_name, 
@@ -155,8 +184,10 @@ FROM orders AS o
 JOIN restaurants AS r ON o.restaurant_id = r.restaurant_id
 GROUP BY r.restaurant_name, day
 ORDER BY r.restaurant_name, total_orders DESC;
+```
 
--- 17. Customer Lifetime Value (CLV)
+###17. Customer Lifetime Value (CLV)
+```sql
 -- Calculate the total revenue generated by each customer.
 SELECT 
     o.customer_id, 
@@ -165,8 +196,10 @@ SELECT
 FROM orders AS o 
 JOIN customers AS c ON o.customer_id = c.customer_id 
 GROUP BY o.customer_id, c.customer_name;
+```
 
--- 18. Rider Efficiency
+###18. Rider Efficiency
+```sql
 -- Evaluate rider efficiency by calculating average delivery times.
 WITH delivery_times AS (
     SELECT 
@@ -182,8 +215,10 @@ SELECT
 FROM delivery_times
 GROUP BY rider_id
 ORDER BY avg_delivery_time;
+```
 
--- 19. Order Item Popularity
+###19. Order Item Popularity
+```sql
 -- Track the popularity of specific order items over different seasons.
 SELECT 
     order_items, 
@@ -197,8 +232,10 @@ SELECT
 FROM orders
 GROUP BY order_items, season
 ORDER BY total_orders DESC;
+```
 
--- 20. City Revenue Ranking
+###20. City Revenue Ranking
+```sql
 -- Rank each city based on total revenue for the year 2023.
 SELECT
     r.city, 
@@ -206,5 +243,5 @@ SELECT
     RANK() OVER (ORDER BY SUM(o.amount) DESC) AS city_rank
 FROM orders AS o
 JOIN restaurants AS r ON o.restaurant_id = r.restaurant_id;
-
+```
 
