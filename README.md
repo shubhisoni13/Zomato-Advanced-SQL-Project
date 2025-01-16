@@ -1,7 +1,9 @@
 # Zomato-Advanced-SQL-Project
-
+  ```sql
 -- 1. Create Database and Use It
 -- Create the "zomato" database and switch to it.
+
+
 CREATE DATABASE zomato;
 USE zomato;
 
