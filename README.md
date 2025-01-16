@@ -1,5 +1,14 @@
 # Zomato-Advanced-SQL-Project
 
+## Overview
+
+The goal of this project is to perform in-depth analysis on a database representing a food delivery system. The SQL queries included in this project cover a wide range of business insights and operational metrics for the Zomato platform. They are designed to extract valuable information from the database for business analysis and decision-making. Some of the key areas analyzed include:
+
+- **Customer Behavior**: Tracking frequent orders, average order value (AOV), high-value customers, and customer churn.
+- **Rider Performance**: Analyzing rider delivery times, efficiency, and monthly earnings.
+- **Restaurant Performance**: Ranking restaurants based on revenue, identifying growth trends, and tracking order frequencies.
+- **Operational Insights**: Identifying undelivered orders, time slot analysis, and popular order items by season.
+
 ### 1. Create Database and Use It
  ```sql
 -- Create the "zomato" database and switch to it. 
