@@ -254,3 +254,9 @@ FROM orders AS o
 JOIN restaurants AS r ON o.restaurant_id = r.restaurant_id;
 ```
 
+## Conclusion
+
+This project demonstrates how SQL can be leveraged to analyze large datasets and extract actionable insights for a food delivery platform like Zomato. By analyzing customer behavior, restaurant performance, and rider efficiency, this project provides valuable information that can drive business decisions and operational improvements. The use of advanced SQL functions enhances the depth and accuracy of the analysis, making it a powerful tool for data-driven business strategies.
+
+The queries provided cover multiple aspects of the food delivery process and can be adapted to suit various business requirements, whether for performance tracking, customer insights, or financial analysis. This work is a valuable resource for anyone involved in data analysis and business intelligence within the food and beverage industry.
+
